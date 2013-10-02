@@ -20,8 +20,7 @@ CFLAGS	+= -DHAVE_CONFIG_H
 
 CFLAGS	+= -pg -fprofile-arcs -ftest-coverage -fno-omit-frame-pointer
 CFLAGS	+= -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls
-
-LDFLAGS	= -pg -fprofile-arcs -pthread
+CFLAGS	+= -pthread
 
 PACKAGES = gtk+-3.0
 
