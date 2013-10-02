@@ -86,10 +86,10 @@ $(DEPDIR) $(OBJDIR):
 # ----------------------------------------------------------------------------
 
 clean:	force
-	$(RM) $(OUT) $(OBJ)
+	$(RM) $(OUT) $(OBJ) *.gcda *.gcno gmon.out
 
 distclean: clean
-	$(RM) $(DEPDIR) $(OBJDIR) tags html
+	$(RM) $(DEPDIR) $(OBJDIR) tags
 
 force:
 
