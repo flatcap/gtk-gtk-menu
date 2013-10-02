@@ -127,6 +127,7 @@ plug_man_open (GApplication *application, GFile **files, gint n_files, const gch
 {
 	gint i;
 
+	g_print ("plug_man_open %d\n", n_files);
 	for (i = 0; i < n_files; i++)
 		new_window (application, files[i]);
 }
@@ -152,11 +153,7 @@ plug_man_finalize (GObject *object)
 static void
 show_about (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	gtk_show_about_dialog (NULL,
-				"program-name", "Plugman",
-				"title", "About Plugman",
-				"comments", "A cheap Bloatpad clone.",
-				NULL);
+	g_print ("about\n");
 }
 
 /**
