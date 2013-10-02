@@ -22,6 +22,8 @@ CFLAGS	+= -pg -fprofile-arcs -ftest-coverage -fno-omit-frame-pointer
 CFLAGS	+= -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls
 CFLAGS	+= -pthread
 
+LDFLAGS	+= -pg -fprofile-arcs
+
 PACKAGES = gtk+-3.0
 
 CFLAGS	+= $(shell pkg-config --cflags $(PACKAGES))
