@@ -179,6 +179,7 @@ quit_app (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 }
 
 
+#if 0
 static gboolean is_red_plugin_enabled;
 static gboolean is_black_plugin_enabled;
 
@@ -321,6 +322,7 @@ enable_or_disable_plugin (GtkToggleButton *button, const gchar *name)
 	}
 }
 
+#endif
 /**
  * configure_plugins
  */
@@ -329,48 +331,11 @@ configure_plugins (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 {
 	GtkBuilder *builder;
 	GtkWidget *dialog;
-	GtkWidget *check;
+	//GtkWidget *check;
 	GError *error = NULL;
 
 	builder = gtk_builder_new ();
-	gtk_builder_add_from_string (builder,
-		"<interface>"
-		"	<object class='GtkDialog' id='plugin-dialog'>"
-		"		<property name='border-width'>12</property>"
-		"		<property name='title'>Plugins</property>"
-		"		<child internal-child='vbox'>"
-		"			<object class='GtkBox' id='content-area'>"
-		"				<property name='visible'>True</property>"
-		"				<child>"
-		"					<object class='GtkCheckButton' id='red-plugin'>"
-		"						<property name='label' translatable='yes'>Red Plugin - turn your text red</property>"
-		"						<property name='visible'>True</property>"
-		"					</object>"
-		"				</child>"
-		"				<child>"
-		"					<object class='GtkCheckButton' id='black-plugin'>"
-		"						<property name='label' translatable='yes'>Black Plugin - turn your text black</property>"
-		"						<property name='visible'>True</property>"
-		"					</object>"
-		"				</child>"
-		"			</object>"
-		"		</child>"
-		"		<child internal-child='action_area'>"
-		"			<object class='GtkButtonBox' id='action-area'>"
-		"				<property name='visible'>True</property>"
-		"				<child>"
-		"					<object class='GtkButton' id='close-button'>"
-		"						<property name='label' translatable='yes'>Close</property>"
-		"						<property name='visible'>True</property>"
-		"					</object>"
-		"				</child>"
-		"			</object>"
-		"		</child>"
-		"		<action-widgets>"
-		"			<action-widget response='-5'>close-button</action-widget>"
-		"		</action-widgets>"
-		"	</object>"
-		"</interface>", -1, &error);
+	gtk_builder_add_from_file (builder, "test2.ui", &error);
 
 	if (error) {
 		g_warning ("%s", error->message);
@@ -378,6 +343,8 @@ configure_plugins (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 		return;
 	}
 
+	dialog = (GtkWidget *)gtk_builder_get_object (builder, "window1");
+	/*
 	dialog = (GtkWidget *)gtk_builder_get_object (builder, "plugin-dialog");
 	check = (GtkWidget *)gtk_builder_get_object (builder, "red-plugin");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), plugin_enabled ("red"));
@@ -387,6 +354,7 @@ configure_plugins (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	g_signal_connect (check, "toggled", G_CALLBACK (enable_or_disable_plugin), "black");
 
 	g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_destroy), NULL);
+	*/
 
 	gtk_window_present (GTK_WINDOW (dialog));
 }
