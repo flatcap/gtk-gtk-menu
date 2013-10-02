@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
+/**
+ * activate_toggle
+ */
 static void
-activate_toggle (GSimpleAction *action,
-		GVariant	*parameter,
-		gpointer	user_data)
+activate_toggle (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GVariant *state;
 
@@ -13,29 +14,31 @@ activate_toggle (GSimpleAction *action,
 	g_variant_unref (state);
 }
 
+/**
+ * change_fullscreen_state
+ */
 static void
-change_fullscreen_state (GSimpleAction *action,
-			GVariant	*state,
-			gpointer	user_data)
+change_fullscreen_state (GSimpleAction *action, GVariant *state, gpointer user_data)
 {
-	if (g_variant_get_boolean (state))
-		gtk_window_fullscreen (user_data);
-	else
-		gtk_window_unfullscreen (user_data);
+	g_print ("fullscreen %d\n", g_variant_get_boolean (state));
 
 	g_simple_action_set_state (action, state);
 }
 
+/**
+ * get_clipboard
+ */
 static GtkClipboard *
 get_clipboard (GtkWidget *widget)
 {
 	return gtk_widget_get_clipboard (widget, gdk_atom_intern_static_string ("CLIPBOARD"));
 }
 
+/**
+ * window_copy
+ */
 static void
-window_copy (GSimpleAction *action,
-		GVariant	*parameter,
-		gpointer	user_data)
+window_copy (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GtkWindow *window = GTK_WINDOW (user_data);
 	GtkTextView *text = g_object_get_data ((GObject*)window, "plugman-text");
@@ -43,10 +46,11 @@ window_copy (GSimpleAction *action,
 	gtk_text_buffer_copy_clipboard (gtk_text_view_get_buffer (text), get_clipboard ((GtkWidget*) text));
 }
 
+/**
+ * window_paste
+ */
 static void
-window_paste (GSimpleAction *action,
-		GVariant	*parameter,
-		gpointer	user_data)
+window_paste (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GtkWindow *window = GTK_WINDOW (user_data);
 	GtkTextView *text = g_object_get_data ((GObject*)window, "plugman-text");
@@ -54,12 +58,18 @@ window_paste (GSimpleAction *action,
 	gtk_text_buffer_paste_clipboard (gtk_text_view_get_buffer (text), get_clipboard ((GtkWidget*) text), NULL, TRUE);
 }
 
+/**
+ * GActionEntry win_entries[]
+ */
 static GActionEntry win_entries[] = {
 	{ "copy", window_copy, NULL, NULL, NULL },
 	{ "paste", window_paste, NULL, NULL, NULL },
 	{ "fullscreen", activate_toggle, NULL, "false", change_fullscreen_state }
 };
 
+/**
+ * new_window
+ */
 static void
 new_window (GApplication *app, GFile *file)
 {
@@ -100,17 +110,20 @@ new_window (GApplication *app, GFile *file)
 	gtk_widget_show_all (GTK_WIDGET (window));
 }
 
+/**
+ * plug_man_activate
+ */
 static void
 plug_man_activate (GApplication *application)
 {
 	new_window (application, NULL);
 }
 
+/**
+ * plug_man_open
+ */
 static void
-plug_man_open (GApplication	*application,
-		GFile		**files,
-		gint		n_files,
-		const gchar	 *hint)
+plug_man_open (GApplication *application, GFile **files, gint n_files, const gchar *hint)
 {
 	gint i;
 
@@ -118,17 +131,24 @@ plug_man_open (GApplication	*application,
 		new_window (application, files[i]);
 }
 
+
 typedef GtkApplication PlugMan;
 typedef GtkApplicationClass PlugManClass;
 
 G_DEFINE_TYPE (PlugMan, plug_man, GTK_TYPE_APPLICATION)
 
+/**
+ * plug_man_finalize
+ */
 static void
 plug_man_finalize (GObject *object)
 {
 	G_OBJECT_CLASS (plug_man_parent_class)->finalize (object);
 }
 
+/**
+ * show_about
+ */
 static void
 show_about (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -139,14 +159,16 @@ show_about (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 				NULL);
 }
 
-
+/**
+ * quit_app
+ */
 static void
 quit_app (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GList *list, *next;
 	GtkWindow *win;
 
-	g_print ("Going down...\n");
+	//g_print ("Going down...\n");
 
 	list = gtk_application_get_windows (GTK_APPLICATION (g_application_get_default ()));
 	while (list) {
@@ -159,9 +181,13 @@ quit_app (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	}
 }
 
+
 static gboolean is_red_plugin_enabled;
 static gboolean is_black_plugin_enabled;
 
+/**
+ * plugin_enabled
+ */
 static gboolean
 plugin_enabled (const gchar *name)
 {
@@ -171,12 +197,18 @@ plugin_enabled (const gchar *name)
 		return is_black_plugin_enabled;
 }
 
+/**
+ * find_plugin_menu
+ */
 static GMenuModel *
 find_plugin_menu (void)
 {
 	return (GMenuModel*) g_object_get_data (G_OBJECT (g_application_get_default ()), "plugin-menu");
 }
 
+/**
+ * plugin_action
+ */
 static void
 plugin_action (GAction	*action, GVariant *parameter, gpointer	data)
 {
@@ -196,6 +228,9 @@ plugin_action (GAction	*action, GVariant *parameter, gpointer	data)
 	gtk_widget_override_color (text, 0, &color);
 }
 
+/**
+ * enable_plugin
+ */
 static void
 enable_plugin (const gchar *name)
 {
@@ -241,6 +276,9 @@ enable_plugin (const gchar *name)
 	}
 }
 
+/**
+ * disable_plugin
+ */
 static void
 disable_plugin (const gchar *name)
 {
@@ -273,6 +311,9 @@ disable_plugin (const gchar *name)
 	}
 }
 
+/**
+ * enable_or_disable_plugin
+ */
 static void
 enable_or_disable_plugin (GtkToggleButton *button, const gchar *name)
 {
@@ -283,7 +324,9 @@ enable_or_disable_plugin (GtkToggleButton *button, const gchar *name)
 	}
 }
 
-
+/**
+ * configure_plugins
+ */
 static void
 configure_plugins (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -351,12 +394,18 @@ configure_plugins (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	gtk_window_present (GTK_WINDOW (dialog));
 }
 
+/**
+ * GActionEntry app_entries[]
+ */
 static GActionEntry app_entries[] = {
 	{ "about", show_about, NULL, NULL, NULL },
 	{ "quit", quit_app, NULL, NULL, NULL },
 	{ "plugins", configure_plugins, NULL, NULL, NULL },
 };
 
+/**
+ * plug_man_startup
+ */
 static void
 plug_man_startup (GApplication *application)
 {
@@ -424,11 +473,17 @@ plug_man_startup (GApplication *application)
 	g_object_unref (builder);
 }
 
+/**
+ * plug_man_init
+ */
 static void
 plug_man_init (PlugMan *app)
 {
 }
 
+/**
+ * plug_man_class_init
+ */
 static void
 plug_man_class_init (PlugManClass *class)
 {
@@ -443,15 +498,18 @@ plug_man_class_init (PlugManClass *class)
 
 }
 
+/**
+ * plug_man_new
+ */
 PlugMan *
 plug_man_new (void)
 {
-	return g_object_new (plug_man_get_type (),
-		"application-id", "org.gtk.Test.plugman",
-		"flags", G_APPLICATION_HANDLES_OPEN,
-		NULL);
+	return g_object_new (plug_man_get_type (), "application-id", "org.gtk.Test.plugman", "flags", G_APPLICATION_HANDLES_OPEN, NULL);
 }
 
+/**
+ * main
+ */
 int
 main (int argc, char **argv)
 {
@@ -465,4 +523,5 @@ main (int argc, char **argv)
 
 	return status;
 }
+
 
