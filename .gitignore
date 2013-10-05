@@ -1,6 +1,6 @@
 /.dep
 /.obj
 /gmon.out
-/plugman
-/plugman.gcda
-/plugman.gcno
+/select
+/select.gcda
+/select.gcno
