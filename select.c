@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
@@ -29,8 +30,33 @@ static void set_colours()
 	GdkRGBA *col6 = &red;
 	GdkRGBA *col7 = &red;
 
-	if (state_button1 == 1)
+	if (state_button1 == 1) {
 		col1 = &green;
+	}
+
+	if ((state_button2 == 1) || (state_button1 == 1)) {
+		col2 = &green;
+	}
+
+	if ((state_button3 == 1) || (state_button2 == 1) || (state_button1 == 1)) {
+		col3 = &green;
+	}
+
+	if ((state_button4 == 1) || (state_button2 == 1) || (state_button1 == 1)) {
+		col4 = &green;
+	}
+
+	if ((state_button5 == 1) || (state_button1 == 1)) {
+		col5 = &green;
+	}
+
+	if ((state_button6 == 1) || (state_button5 == 1) || (state_button1 == 1)) {
+		col6 = &green;
+	}
+
+	if ((state_button7 == 1) || (state_button5 == 1) || (state_button1 == 1)) {
+		col7 = &green;
+	}
 
 	gtk_color_chooser_set_rgba ((GtkColorChooser*) c1, col1);
 	gtk_color_chooser_set_rgba ((GtkColorChooser*) c2, col2);
@@ -65,24 +91,65 @@ static void set_tristate (GtkWidget *check, int value)
 }
 
 /**
+ * next_tristate
+ */
+static int next_tristate (int val)
+{
+	switch (val) {
+		case -1: return  1;
+		case  0: return -1;
+		case  1:
+		default:
+			 return  0;
+	}
+}
+
+/**
  * button_press
  */
 static void
 button_press (GtkWidget *button, void *param)
 {
-	if (button == b1) {			// DEFAULT
-		if (state_button1 == 1)
+	GdkEventButton *event = (GdkEventButton*) gtk_get_current_event();
+
+	printf ("state = %d\n", event->state);
+
+	if (event->state & GDK_SHIFT_MASK)   printf ("SHIFT\n");
+	if (event->state & GDK_CONTROL_MASK) printf ("CONTROL\n");
+	if (event->state & GDK_MOD1_MASK)    printf ("ALT\n");
+
+	if (button == b1) {
+		if (state_button1 == 1) {
 			state_button1 = 0;
-		else
+		} else {
 			state_button1 = 1;
+		}
 		set_tristate (x1, state_button1);
 	}
-	if (button == b2) printf ("b2\n");
-	if (button == b3) printf ("b3\n");
-	if (button == b4) printf ("b4\n");
-	if (button == b5) printf ("b5\n");
-	if (button == b6) printf ("b6\n");
-	if (button == b7) printf ("b7\n");
+	if (button == b2) {
+		state_button2 = next_tristate(state_button2);
+		set_tristate(x2, state_button2);
+	}
+	if (button == b3) {
+		state_button3 = next_tristate(state_button3);
+		set_tristate(x3, state_button3);
+	}
+	if (button == b4) {
+		state_button4 = next_tristate(state_button4);
+		set_tristate(x4, state_button4);
+	}
+	if (button == b5) {
+		state_button5 = next_tristate(state_button5);
+		set_tristate(x5, state_button5);
+	}
+	if (button == b6) {
+		state_button6 = next_tristate(state_button6);
+		set_tristate(x6, state_button6);
+	}
+	if (button == b7) {
+		state_button7 = next_tristate(state_button7);
+		set_tristate(x7, state_button7);
+	}
 }
 
 
