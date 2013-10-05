@@ -2,161 +2,20 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-int state_button1 = -1;
-int state_button2 = -1;
-int state_button3 = -1;
-int state_button4 = -1;
-int state_button5 = -1;
-int state_button6 = -1;
-int state_button7 = -1;
+int state1 = 0;
+int state2 = 0;
+int state3 = 0;
+int state4 = 0;
+int state5 = 0;
+int state6 = 0;
+int state7 = 0;
 
 GtkWidget *b1, *b2, *b3, *b4, *b5, *b6, *b7;
 GtkWidget *x1, *x2, *x3, *x4, *x5, *x6, *x7;
 GtkWidget *c1, *c2, *c3, *c4, *c5, *c6, *c7;
 
-GdkRGBA red   = { 1.0, 0.0, 0.0, 1.0 };
-GdkRGBA green = { 0.0, 1.0, 0.0, 1.0 };
-
-/**
- * set_colours
- */
-static void set_colours()
-{
-	GdkRGBA *col1 = &red;
-	GdkRGBA *col2 = &red;
-	GdkRGBA *col3 = &red;
-	GdkRGBA *col4 = &red;
-	GdkRGBA *col5 = &red;
-	GdkRGBA *col6 = &red;
-	GdkRGBA *col7 = &red;
-
-	if (state_button1 == 1) {
-		col1 = &green;
-	}
-
-	if ((state_button2 == 1) || (state_button1 == 1)) {
-		col2 = &green;
-	}
-
-	if ((state_button3 == 1) || (state_button2 == 1) || (state_button1 == 1)) {
-		col3 = &green;
-	}
-
-	if ((state_button4 == 1) || (state_button2 == 1) || (state_button1 == 1)) {
-		col4 = &green;
-	}
-
-	if ((state_button5 == 1) || (state_button1 == 1)) {
-		col5 = &green;
-	}
-
-	if ((state_button6 == 1) || (state_button5 == 1) || (state_button1 == 1)) {
-		col6 = &green;
-	}
-
-	if ((state_button7 == 1) || (state_button5 == 1) || (state_button1 == 1)) {
-		col7 = &green;
-	}
-
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c1, col1);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c2, col2);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c3, col3);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c4, col4);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c5, col5);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c6, col6);
-	gtk_color_chooser_set_rgba ((GtkColorChooser*) c7, col7);
-}
-
-/**
- * set_tristate
- */
-static void set_tristate (GtkWidget *check, int value)
-{
-	GtkToggleButton *t = (GtkToggleButton*) check;
-
-	switch (value) {
-		case -1:
-			gtk_toggle_button_set_inconsistent (t, TRUE);
-			break;
-		case 0:
-			gtk_toggle_button_set_inconsistent (t, FALSE);
-			gtk_toggle_button_set_active       (t, FALSE);
-			break;
-		case 1:
-			gtk_toggle_button_set_inconsistent (t, FALSE);
-			gtk_toggle_button_set_active       (t, TRUE);
-			break;
-	}
-	set_colours();
-}
-
-/**
- * next_tristate
- */
-static int next_tristate (int val)
-{
-	switch (val) {
-		case -1: return  1;
-		case  0: return -1;
-		case  1:
-		default:
-			 return  0;
-	}
-}
-
-
-/**
- * button_clicked
- */
-static void
-button_clicked (GtkWidget *button, void *param)
-{
-	GdkEventButton *event = (GdkEventButton*) gtk_get_current_event();
-
-	printf ("type  = %d\n", event->type);
-	printf ("state = %d\n", event->state);
-
-	if (event->type == GDK_BUTTON_PRESS)  printf ("GDK_BUTTON_PRESS\n");
-	if (event->type == GDK_2BUTTON_PRESS) printf ("GDK_2BUTTON_PRESS\n");
-	if (event->type == GDK_3BUTTON_PRESS) printf ("GDK_3BUTTON_PRESS\n");
-
-	if (event->state & GDK_SHIFT_MASK)   printf ("SHIFT\n");
-	if (event->state & GDK_CONTROL_MASK) printf ("CONTROL\n");
-	if (event->state & GDK_MOD1_MASK)    printf ("ALT\n");
-
-	if (button == b1) {
-		if (state_button1 == 1) {
-			state_button1 = 0;
-		} else {
-			state_button1 = 1;
-		}
-		set_tristate (x1, state_button1);
-	}
-	if (button == b2) {
-		state_button2 = next_tristate(state_button2);
-		set_tristate(x2, state_button2);
-	}
-	if (button == b3) {
-		state_button3 = next_tristate(state_button3);
-		set_tristate(x3, state_button3);
-	}
-	if (button == b4) {
-		state_button4 = next_tristate(state_button4);
-		set_tristate(x4, state_button4);
-	}
-	if (button == b5) {
-		state_button5 = next_tristate(state_button5);
-		set_tristate(x5, state_button5);
-	}
-	if (button == b6) {
-		state_button6 = next_tristate(state_button6);
-		set_tristate(x6, state_button6);
-	}
-	if (button == b7) {
-		state_button7 = next_tristate(state_button7);
-		set_tristate(x7, state_button7);
-	}
-}
+GdkRGBA red   = { 0.7, 0.0, 0.0, 1.0 };
+GdkRGBA green = { 0.0, 0.7, 0.0, 1.0 };
 
 /**
  * button_press
@@ -164,30 +23,53 @@ button_clicked (GtkWidget *button, void *param)
 static gboolean
 button_press (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
-	printf ("type  = %d\n", event->type);
+	int shift = FALSE;
 
-	if (event->type == GDK_BUTTON_PRESS)  printf ("GDK_BUTTON_PRESS\n");
-	if (event->type == GDK_2BUTTON_PRESS) printf ("GDK_2BUTTON_PRESS\n");
-	if (event->type == GDK_3BUTTON_PRESS) printf ("GDK_3BUTTON_PRESS\n");
+	GdkEventButton *e = (GdkEventButton*) event;
+
+	if ((e->type != GDK_BUTTON_PRESS) &&
+	    (e->type != GDK_2BUTTON_PRESS))
+		return TRUE;
+
+	shift = ((e->type  == GDK_2BUTTON_PRESS) ||
+		 (e->state && GDK_MOD1_MASK));
+
+	if (widget == b1) { state1 = 1 - state1; gtk_toggle_button_set_active ((GtkToggleButton*) x1, state1); }
+	if (widget == b2) { state2 = 1 - state2; gtk_toggle_button_set_active ((GtkToggleButton*) x2, state2); }
+	if (widget == b3) { state3 = 1 - state3; gtk_toggle_button_set_active ((GtkToggleButton*) x3, state3); }
+	if (widget == b4) { state4 = 1 - state4; gtk_toggle_button_set_active ((GtkToggleButton*) x4, state4); }
+	if (widget == b5) { state5 = 1 - state5; gtk_toggle_button_set_active ((GtkToggleButton*) x5, state5); }
+	if (widget == b6) { state6 = 1 - state6; gtk_toggle_button_set_active ((GtkToggleButton*) x6, state6); }
+	if (widget == b7) { state7 = 1 - state7; gtk_toggle_button_set_active ((GtkToggleButton*) x7, state7); }
+
+	if ((widget == b1) && shift) {
+		state2 = state3 = state4 = state5 = state6 = state7 = state1;
+	}
+
+	if ((widget == b2) && shift) {
+		state3 = state4 = state5 = state6 = state7 = state2;
+	}
+
+	if ((widget == b5) && shift) {
+		state6 = state7 = state5;
+	}
+
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c1, (state1 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c2, (state2 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c3, (state3 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c4, (state4 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c5, (state5 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c6, (state6 == 1) ? &green : &red);
+	gtk_color_chooser_set_rgba ((GtkColorChooser*) c7, (state7 == 1) ? &green : &red);
 
 	return TRUE;
 }
-
 
 
 typedef GtkApplication PlugMan;
 typedef GtkApplicationClass PlugManClass;
 
 G_DEFINE_TYPE (PlugMan, plug_man, GTK_TYPE_APPLICATION)
-
-/**
- * plug_man_finalize
- */
-static void
-plug_man_finalize (GObject *object)
-{
-	G_OBJECT_CLASS (plug_man_parent_class)->finalize (object);
-}
 
 /**
  * plug_man_activate
@@ -234,27 +116,33 @@ plug_man_activate (GApplication *app)
 	c6 = (GtkWidget *)gtk_builder_get_object (builder, "colorbutton6");
 	c7 = (GtkWidget *)gtk_builder_get_object (builder, "colorbutton7");
 
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x1, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x2, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x3, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x4, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x5, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x6, TRUE);
-	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x7, TRUE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x1, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x2, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x3, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x4, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x5, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x6, FALSE);
+	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x7, FALSE);
 
-	gtk_widget_set_events (window, GDK_BUTTON_PRESS_MASK);
-	g_signal_connect (window, "button-press-event", G_CALLBACK (button_press), NULL);
-
-	g_signal_connect (b1, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b2, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b3, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b4, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b5, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b6, "clicked", G_CALLBACK (button_clicked), NULL);
-	g_signal_connect (b7, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b1, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b2, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b3, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b4, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b5, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b6, "button-press-event", G_CALLBACK (button_press), NULL);
+	g_signal_connect (b7, "button-press-event", G_CALLBACK (button_press), NULL);
 
 	g_object_unref (builder);
 	gtk_widget_show_all (GTK_WIDGET (window));
+}
+
+/**
+ * plug_man_finalize
+ */
+static void
+plug_man_finalize (GObject *object)
+{
+	G_OBJECT_CLASS (plug_man_parent_class)->finalize (object);
 }
 
 /**
