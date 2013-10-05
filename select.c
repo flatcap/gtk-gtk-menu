@@ -86,11 +86,25 @@ button_press (GtkWidget *button, void *param)
 }
 
 
+typedef GtkApplication PlugMan;
+typedef GtkApplicationClass PlugManClass;
+
+G_DEFINE_TYPE (PlugMan, plug_man, GTK_TYPE_APPLICATION)
+
 /**
- * new_window
+ * plug_man_finalize
  */
 static void
-new_window (GApplication *app, GFile *file)
+plug_man_finalize (GObject *object)
+{
+	G_OBJECT_CLASS (plug_man_parent_class)->finalize (object);
+}
+
+/**
+ * plug_man_activate
+ */
+static void
+plug_man_activate (GApplication *app)
 {
 	GtkWidget *window = NULL;
 	GtkBuilder *builder;
@@ -106,7 +120,6 @@ new_window (GApplication *app, GFile *file)
 
 	vbox = (GtkWidget *)gtk_builder_get_object (builder, "vbox2");
 	gtk_widget_reparent (vbox, window);
-	//gtk_container_add (GTK_CONTAINER (window), vbox);
 
 	b1 = (GtkWidget *)gtk_builder_get_object (builder, "button1");
 	b2 = (GtkWidget *)gtk_builder_get_object (builder, "button2");
@@ -153,31 +166,6 @@ new_window (GApplication *app, GFile *file)
 }
 
 /**
- * plug_man_activate
- */
-static void
-plug_man_activate (GApplication *application)
-{
-	new_window (application, NULL);
-}
-
-
-typedef GtkApplication PlugMan;
-typedef GtkApplicationClass PlugManClass;
-
-G_DEFINE_TYPE (PlugMan, plug_man, GTK_TYPE_APPLICATION)
-
-/**
- * plug_man_finalize
- */
-static void
-plug_man_finalize (GObject *object)
-{
-	G_OBJECT_CLASS (plug_man_parent_class)->finalize (object);
-}
-
-
-/**
  * plug_man_startup
  */
 static void
@@ -209,6 +197,7 @@ plug_man_class_init (PlugManClass *class)
 	object_class->finalize = plug_man_finalize;
 
 }
+
 
 /**
  * main
