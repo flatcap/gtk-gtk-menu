@@ -104,15 +104,21 @@ static int next_tristate (int val)
 	}
 }
 
+
 /**
- * button_press
+ * button_clicked
  */
 static void
-button_press (GtkWidget *button, void *param)
+button_clicked (GtkWidget *button, void *param)
 {
 	GdkEventButton *event = (GdkEventButton*) gtk_get_current_event();
 
+	printf ("type  = %d\n", event->type);
 	printf ("state = %d\n", event->state);
+
+	if (event->type == GDK_BUTTON_PRESS)  printf ("GDK_BUTTON_PRESS\n");
+	if (event->type == GDK_2BUTTON_PRESS) printf ("GDK_2BUTTON_PRESS\n");
+	if (event->type == GDK_3BUTTON_PRESS) printf ("GDK_3BUTTON_PRESS\n");
 
 	if (event->state & GDK_SHIFT_MASK)   printf ("SHIFT\n");
 	if (event->state & GDK_CONTROL_MASK) printf ("CONTROL\n");
@@ -151,6 +157,22 @@ button_press (GtkWidget *button, void *param)
 		set_tristate(x7, state_button7);
 	}
 }
+
+/**
+ * button_press
+ */
+static gboolean
+button_press (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+	printf ("type  = %d\n", event->type);
+
+	if (event->type == GDK_BUTTON_PRESS)  printf ("GDK_BUTTON_PRESS\n");
+	if (event->type == GDK_2BUTTON_PRESS) printf ("GDK_2BUTTON_PRESS\n");
+	if (event->type == GDK_3BUTTON_PRESS) printf ("GDK_3BUTTON_PRESS\n");
+
+	return TRUE;
+}
+
 
 
 typedef GtkApplication PlugMan;
@@ -220,13 +242,16 @@ plug_man_activate (GApplication *app)
 	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x6, TRUE);
 	gtk_toggle_button_set_inconsistent ((GtkToggleButton*) x7, TRUE);
 
-	g_signal_connect (b1, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b2, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b3, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b4, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b5, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b6, "clicked", G_CALLBACK (button_press), NULL);
-	g_signal_connect (b7, "clicked", G_CALLBACK (button_press), NULL);
+	gtk_widget_set_events (window, GDK_BUTTON_PRESS_MASK);
+	g_signal_connect (window, "button-press-event", G_CALLBACK (button_press), NULL);
+
+	g_signal_connect (b1, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b2, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b3, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b4, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b5, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b6, "clicked", G_CALLBACK (button_clicked), NULL);
+	g_signal_connect (b7, "clicked", G_CALLBACK (button_clicked), NULL);
 
 	g_object_unref (builder);
 	gtk_widget_show_all (GTK_WIDGET (window));
