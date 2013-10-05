@@ -2,7 +2,7 @@ CC	= gcc
 RM	= rm -fr
 MKDIR	= mkdir -p
 
-SRC	= plugman.c
+SRC	= select.c
 HDR	=
 
 DEPDIR	= .dep
@@ -10,7 +10,7 @@ OBJDIR	= .obj
 
 OBJ	= $(SRC:%.c=$(OBJDIR)/%.o)
 
-OUT	= plugman
+OUT	= select
 
 CFLAGS	= -g -Wall
 CFLAGS	+= -DGDK_DISABLE_DEPRECATED
