@@ -2,7 +2,7 @@ CC	= gcc
 RM	= rm -fr
 MKDIR	= mkdir -p
 
-SRC	= select.c
+SRC	= area.c
 HDR	=
 
 DEPDIR	= .dep
@@ -10,7 +10,7 @@ OBJDIR	= .obj
 
 OBJ	= $(SRC:%.c=$(OBJDIR)/%.o)
 
-OUT	= select
+OUT	= area
 
 CFLAGS	= -g -Wall
 CFLAGS	+= -DGDK_DISABLE_DEPRECATED
@@ -18,10 +18,12 @@ CFLAGS	+= -DGTK_DISABLE_DEPRECATED
 CFLAGS	+= -DG_ENABLE_DEBUG
 CFLAGS	+= -DHAVE_CONFIG_H
 
-CFLAGS	+= -pg -fprofile-arcs -ftest-coverage -fno-omit-frame-pointer
-CFLAGS	+= -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls
+CFLAGS	+= -fno-inline-functions
+CFLAGS	+= -fno-inline-functions-called-once
+CFLAGS	+= -fno-omit-frame-pointer
+CFLAGS	+= -fno-optimize-sibling-calls
 
-LDFLAGS	+= -pg -fprofile-arcs
+LDFLAGS	+= 
 
 PACKAGES = gtk+-3.0
 
@@ -86,8 +88,8 @@ $(DEPDIR) $(OBJDIR):
 
 # ----------------------------------------------------------------------------
 
-quiet_cmd_CLEAN	= RM	$(OUT) $(OBJ) *.gcda *.gcno gmon.out
-      cmd_CLEAN	= $(RM) $(OUT) $(OBJ) *.gcda *.gcno gmon.out
+quiet_cmd_CLEAN	= RM	$(OUT) $(OBJ)
+      cmd_CLEAN	= $(RM) $(OUT) $(OBJ)
 
 quiet_cmd_DCLEAN = RM	$(DEPDIR) $(OBJDIR) tags
       cmd_DCLEAN = $(RM) $(DEPDIR) $(OBJDIR) tags
@@ -101,7 +103,4 @@ distclean: clean
 force:
 
 -include $(SRC:%.c=$(DEPDIR)/%.d)
-
-wc:	force
-	@wc -l $(SRC) $(HDR)
 
