@@ -166,10 +166,10 @@ plug_man_init (PlugMan *app)
  * plug_man_class_init
  */
 static void
-plug_man_class_init (PlugManClass *class)
+plug_man_class_init (PlugManClass *c)
 {
-	GApplicationClass *application_class = G_APPLICATION_CLASS (class);
-	GObjectClass *object_class = G_OBJECT_CLASS (class);
+	GApplicationClass *application_class = G_APPLICATION_CLASS (c);
+	GObjectClass *object_class = G_OBJECT_CLASS (c);
 
 	application_class->startup = plug_man_startup;
 	application_class->activate = plug_man_activate;
@@ -185,7 +185,7 @@ plug_man_class_init (PlugManClass *class)
 int
 main (int argc, char **argv)
 {
-	PlugMan *plug_man;
+	gpointer plug_man;
 
 	plug_man = g_object_new (plug_man_get_type (), "application-id", "org.flatcap.test.plugman", "flags", G_APPLICATION_HANDLES_OPEN, NULL);
 	g_application_run (G_APPLICATION (plug_man), argc, argv);
