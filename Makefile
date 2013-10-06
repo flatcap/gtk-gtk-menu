@@ -20,7 +20,6 @@ CFLAGS	+= -DHAVE_CONFIG_H
 
 CFLAGS	+= -pg -fprofile-arcs -ftest-coverage -fno-omit-frame-pointer
 CFLAGS	+= -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls
-CFLAGS	+= -pthread
 
 LDFLAGS	+= -pg -fprofile-arcs
 
@@ -74,7 +73,7 @@ $(OBJDIR)/%.o: %.c
 quiet_cmd_LD	= LD	$@
       cmd_LD	= $(CC) -o $@ $(OBJ) $(LDFLAGS)
 
-main: $(OBJ)
+$(OUT):	$(OBJ)
 	$(call cmd,LD)
 
 # ----------------------------------------------------------------------------
@@ -87,11 +86,17 @@ $(DEPDIR) $(OBJDIR):
 
 # ----------------------------------------------------------------------------
 
+quiet_cmd_CLEAN	= RM	$(OUT) $(OBJ) *.gcda *.gcno gmon.out
+      cmd_CLEAN	= $(RM) $(OUT) $(OBJ) *.gcda *.gcno gmon.out
+
+quiet_cmd_DCLEAN = RM	$(DEPDIR) $(OBJDIR) tags
+      cmd_DCLEAN = $(RM) $(DEPDIR) $(OBJDIR) tags
+
 clean:	force
-	$(RM) $(OUT) $(OBJ) *.gcda *.gcno gmon.out
+	$(call cmd,CLEAN)
 
 distclean: clean
-	$(RM) $(DEPDIR) $(OBJDIR) tags
+	$(call cmd,DCLEAN)
 
 force:
 
