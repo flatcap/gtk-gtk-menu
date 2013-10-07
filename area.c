@@ -18,7 +18,7 @@ app_menu_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer us
 }
 
 /**
- * app_menu_help_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+ * app_menu_help_cb
  */
 static void
 app_menu_help_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
@@ -27,7 +27,7 @@ app_menu_help_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 }
 
 /**
- * app_menu_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+ * app_menu_about_cb
  */
 static void
 app_menu_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
@@ -36,7 +36,7 @@ app_menu_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 /**
- * app_menu_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+ * app_menu_quit_cb
  */
 static void
 app_menu_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
