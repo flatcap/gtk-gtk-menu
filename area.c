@@ -151,7 +151,14 @@ area_activate (GApplication *app)
 		g_signal_connect (da, "configure-event", G_CALLBACK (on_configure), NULL);
 	}
 
-	gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(), "/home/flatcap/work/gtk-menu");
+	GdkPixbuf *pixbuf;
+
+	pixbuf = gdk_pixbuf_new_from_file ("d.png", NULL);
+	g_assert (pixbuf);
+
+	gtk_window_set_default_icon (pixbuf);
+
+	g_object_unref (pixbuf);
 
 	const GActionEntry app_menu_actions[] = {
 		{ "preferences", app_menu_preferences_cb,   NULL, NULL, NULL },
