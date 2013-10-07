@@ -75,6 +75,49 @@ app_has_app_menu (void)
 	return show_app_menu && !show_menubar;
 }
 
+
+/**
+ * on_draw
+ */
+static gboolean
+on_draw (GtkWidget *da, cairo_t *cr, gpointer data)
+{
+	int width = gtk_widget_get_allocated_width (da);
+	int height = gtk_widget_get_allocated_height (da);
+
+	cairo_set_source_rgb (cr, 0.45777, 0, 0.45777);
+
+	cairo_rectangle (cr, 0, 0, 50, 50);
+	cairo_fill (cr);
+
+	cairo_rectangle (cr, width-50, 0, 50, 50);
+	cairo_fill (cr);
+
+	cairo_rectangle (cr, width-50, height-50, 50, 50);
+	cairo_fill (cr);
+
+	cairo_rectangle (cr, 0, height-50, 50, 50);
+	cairo_fill (cr);
+
+	return TRUE;
+}
+
+/**
+ * on_configure
+ */
+static gboolean
+on_configure (GtkWidget *widget, GdkEventConfigure *event, gpointer data)
+{
+	GtkAllocation allocation;
+
+	gtk_widget_get_allocation (widget, &allocation);
+
+	gtk_widget_set_size_request (widget, -1, 1000);
+
+	return TRUE;
+}
+
+
 /**
  * area_activate
  */
@@ -83,23 +126,29 @@ area_activate (GApplication *app)
 {
 	printf ("Entering: %s\n", __func__);
 	if (!window) {
-		//GtkBuilder *builder;
-		//GError *error = NULL;
-		//GtkWidget *vbox = NULL;
-
 		window = gtk_application_window_new (GTK_APPLICATION (app));
-		gtk_window_set_default_size (GTK_WINDOW (window), 320, 120);
+		gtk_window_set_default_size (GTK_WINDOW (window), 1024, 640);
 		gtk_window_set_title (GTK_WINDOW (window), "area");
 
-#if 0
-		builder = gtk_builder_new();
-		gtk_builder_add_from_file (builder, "area.ui", &error);
+		GtkWidget *sw;
+		GtkWidget *vp;
+		GtkWidget *da;
 
-		vbox = (GtkWidget *)gtk_builder_get_object (builder, "vbox2");
-		gtk_widget_reparent (vbox, window);
+		sw = gtk_scrolled_window_new (NULL, NULL);
+		gtk_container_add (GTK_CONTAINER (window), sw);
 
-		g_object_unref (builder);
-#endif
+		vp = gtk_viewport_new (NULL, NULL);
+		gtk_container_add (GTK_CONTAINER (sw), vp);
+
+		da = gtk_drawing_area_new();
+		gtk_container_add (GTK_CONTAINER (vp), da);
+
+		gtk_widget_set_size_request (da, 1000, 1000);
+		gtk_widget_set_hexpand (da, TRUE);
+		gtk_widget_set_vexpand (da, FALSE);
+
+		g_signal_connect (da, "draw",            G_CALLBACK (on_draw),      NULL);
+		g_signal_connect (da, "configure-event", G_CALLBACK (on_configure), NULL);
 	}
 
 	gtk_icon_theme_append_search_path (gtk_icon_theme_get_default(), "/home/flatcap/work/gtk-menu");
