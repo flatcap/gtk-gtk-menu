@@ -133,21 +133,29 @@ App::menu_help (void)
 void
 App::menu_about (void)
 {
+	const std::vector<Glib::ustring> authors     = {"Jim","Bob","Dave","Mike","Phil"};
+	const std::vector<Glib::ustring> documenters = {"Mary","Jane","Gladys"};
+	const std::vector<Glib::ustring> artists     = {"Van Gogh","Monet","Turner"};
+
 	Gtk::AboutDialog about;
 
 	about.set_name("DParted");
-	about.set_program_name("DParted");
-	//about.set_version(VERSION);
-	//about.set_logo(IconManager::obj().get_icon(IconManager::GNOTE, 48));
+	about.set_program_name("dparted");
+	about.set_version("0.1");
+	about.set_logo_icon_name("dparted");
 	about.set_copyright("Copyright \xc2\xa9 2013 Richard Russon (FlatCap)\n");
 	about.set_comments("Reorganise your disk.");
 	about.set_website("http://flatcap.org/rich");
-	about.set_website_label("Homepage");
-	//about.set_authors(authors);
-	//about.set_documenters(documenters);
-	//about.set_translator_credits(translators);
-	about.set_icon_name("dparted");
+	about.set_website_label("Rich's homepage");
+	about.set_authors(authors);
+	about.set_documenters(documenters);
+	about.set_translator_credits("Bjorn ,Volker, Pierre");
+	about.set_artists(artists);
+	about.set_license_type(Gtk::LICENSE_GPL_3_0);
+
 	//about.set_transient_for(recent_changes);
+
+	about.set_icon_name("dparted");
 
 	about.run();
 }

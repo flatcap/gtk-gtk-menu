@@ -19,8 +19,6 @@
 #ifndef _APP_H_
 #define _APP_H_
 
-#include <string>
-
 #include <gtkmm/application.h>
 
 class App : public Gtk::Application

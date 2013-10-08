@@ -21,7 +21,6 @@
 
 #include "gtkmm/applicationwindow.h"
 #include "gtkmm/scrolledwindow.h"
-#include "gtkmm/viewport.h"
 #include "gtkmm/drawingarea.h"
 
 class Area : public Gtk::ApplicationWindow
