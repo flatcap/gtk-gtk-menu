@@ -53,11 +53,11 @@ App::on_startup (void)
 {
 	Gtk::Application::on_startup();
 
-	//Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
+	Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
 
-	//theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
+	theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
 
-	//if (have_appmenu()) {
+	if (have_appmenu()) {
 
 		Glib::RefPtr<Gio::SimpleAction> action;
 
@@ -74,7 +74,7 @@ App::on_startup (void)
 		menu->append ("_Quit",        "app.quit");
 
 		set_app_menu (menu);
-	//}
+	}
 }
 
 /**
@@ -128,7 +128,7 @@ App::menu_about (void)
 	about.set_program_name("DParted");
 	//about.set_version(VERSION);
 	//about.set_logo(IconManager::obj().get_icon(IconManager::GNOTE, 48));
-	about.set_copyright("Copyright \xc2\xa9 2013 Richard Russon (FlatCap\n");
+	about.set_copyright("Copyright \xc2\xa9 2013 Richard Russon (FlatCap)\n");
 	about.set_comments("Reorganise your disk.");
 	about.set_website("http://flatcap.org/rich");
 	about.set_website_label("Homepage");

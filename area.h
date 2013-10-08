@@ -19,12 +19,12 @@
 #ifndef _AREA_H_
 #define _AREA_H_
 
-#include "gtkmm/window.h"
+#include "gtkmm/applicationwindow.h"
 #include "gtkmm/scrolledwindow.h"
 #include "gtkmm/viewport.h"
 #include "gtkmm/drawingarea.h"
 
-class Area : public Gtk::Window
+class Area : public Gtk::ApplicationWindow
 {
 public:
 	Area();

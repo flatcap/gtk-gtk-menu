@@ -41,7 +41,7 @@ protected:
 	void menu_about       (void);
 	void menu_quit        (void);
 
-	void on_startup (void);
+	virtual void on_startup (void);
 };
 
 #endif // _APP_H_
