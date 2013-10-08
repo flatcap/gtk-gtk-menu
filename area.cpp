@@ -43,7 +43,7 @@ Area::Area() :
 
 	set_default_icon_name ("dparted");
 
-	//XXX show_all();
+	show_all_children();
 }
 
 /**
