@@ -36,8 +36,6 @@ protected:
 
 	bool on_my_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 	bool on_my_configure_event (GdkEventConfigure *event);
-
-	int app_has_app_menu (void);
 };
 
 #endif // _AREA_H_

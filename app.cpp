@@ -24,16 +24,19 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/builder.h>
 #include <giomm/menu.h>
+#include <glibmm.h>
 
 #include "app.h"
+#include "area.h"
 
 /**
  * App
  */
-App::App (int &argc, char **&argv, const Glib::ustring& application_id, Gio::ApplicationFlags flags) :
-	Gtk::Application (argc, argv, application_id, flags)
+App::App() :
+	Gtk::Application("org.flatcap.test.area", Gio::APPLICATION_FLAGS_NONE)
 {
 	//printf ("App::App\n");
+	Glib::set_application_name("dparted");
 }
 
 /**
@@ -42,6 +45,15 @@ App::App (int &argc, char **&argv, const Glib::ustring& application_id, Gio::App
 App::~App()
 {
 	//printf ("App::~App\n");
+}
+
+/**
+ * create
+ */
+Glib::RefPtr<App>
+App::create (void)
+{
+	return Glib::RefPtr<App> (new App());
 }
 
 
@@ -57,44 +69,43 @@ App::on_startup (void)
 
 	theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
 
-	if (have_appmenu()) {
+	Glib::RefPtr<Gio::SimpleAction> action;
 
-		Glib::RefPtr<Gio::SimpleAction> action;
+	add_action("preferences", sigc::mem_fun(*this, &App::menu_preferences));
+	add_action("help",        sigc::mem_fun(*this, &App::menu_help));
+	add_action("about",       sigc::mem_fun(*this, &App::menu_about));
+	add_action("quit",        sigc::mem_fun(*this, &App::menu_quit));
 
-		add_action("preferences", sigc::mem_fun(*this, &App::menu_preferences));
-		add_action("help",        sigc::mem_fun(*this, &App::menu_help));
-		add_action("about",       sigc::mem_fun(*this, &App::menu_about));
-		add_action("quit",        sigc::mem_fun(*this, &App::menu_quit));
+	Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
 
-		Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+	menu->append ("_Preferences", "app.preferences");
+	menu->append ("_Help",        "app.help");
+	menu->append ("_About",       "app.about");
+	menu->append ("_Quit",        "app.quit");
 
-		menu->append ("_Preferences", "app.preferences");
-		menu->append ("_Help",        "app.help");
-		menu->append ("_About",       "app.about");
-		menu->append ("_Quit",        "app.quit");
-
-		set_app_menu (menu);
-	}
+	set_app_menu (menu);
 }
 
 /**
- * have_appmenu
+ * on_activate
  */
-int
-App::have_appmenu (void)
+void
+App::on_activate()
 {
-	/* We have three cases:
-	 * - GNOME 3: show-app-menu true, show-menubar false -> use the app menu
-	 * - Unity, OSX: show-app-menu and show-menubar true -> use the normal menu
-	 * - Other WM, Windows: show-app-menu and show-menubar false -> use the normal menu
-	 */
-	Glib::RefPtr<Gtk::Settings> s = Gtk::Settings::get_default();
+	//std::cout << "debug1: " << G_STRFUNC << std::endl;
+	// The application has been started, so let's show a window.
+	// A real application might want to reuse this "empty" window in on_open(),
+	// when asked to open a file, if no changes have been made yet.
 
-	bool show_app_menu = s->property_gtk_shell_shows_app_menu();
-	bool show_menubar  = s->property_gtk_shell_shows_menubar();
-	/* also: gtk-application-prefer-dark-theme */
+	Area *area = new Area();
 
-	return show_app_menu && !show_menubar;
+	add_window(*area);
+
+	//Delete the window when it is hidden.
+	//That's enough for this simple example.
+	//window->signal_hide().connect(sigc::bind<Gtk::Window*>(sigc::mem_fun(*this, &App::on_window_hide), window));
+
+	area->show();
 }
 
 
@@ -157,11 +168,9 @@ App::menu_quit (void)
 int
 main (int argc, char *argv[])
 {
-	App app (argc, argv, "org.flatcap.test.area", Gio::APPLICATION_FLAGS_NONE);
+	Glib::RefPtr<App> app = App::create();
 
-	Area area;
-
-	return app.run (area);
+	return app->run(argc, argv);
 }
 
 

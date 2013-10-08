@@ -23,25 +23,22 @@
 
 #include <gtkmm/application.h>
 
-#include "area.h"
-
 class App : public Gtk::Application
 {
 public:
-	App (int &argc,
-		char **&argv,
-		const Glib::ustring& application_id = Glib::ustring(),
-		Gio::ApplicationFlags flags = Gio::APPLICATION_FLAGS_NONE);
-	virtual ~App();
+	static Glib::RefPtr<App> create (void);
 
 protected:
-	int have_appmenu (void);
+	App();
+	virtual ~App();
+
+	virtual void on_activate (void);
+	virtual void on_startup  (void);
+
 	void menu_preferences (void);
 	void menu_help        (void);
 	void menu_about       (void);
 	void menu_quit        (void);
-
-	virtual void on_startup (void);
 };
 
 #endif // _APP_H_
