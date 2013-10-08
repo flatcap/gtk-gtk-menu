@@ -36,10 +36,10 @@ public:
 
 protected:
 	int have_appmenu (void);
-	void menu_preferences (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-	void menu_help        (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-	void menu_about       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-	void menu_quit        (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+	void menu_preferences (void);
+	void menu_help        (void);
+	void menu_about       (void);
+	void menu_quit        (void);
 
 	void on_startup (void);
 };

@@ -53,21 +53,28 @@ App::on_startup (void)
 {
 	Gtk::Application::on_startup();
 
-	Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
+	//Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
 
-	theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
+	//theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
 
-	if (have_appmenu()) {
+	//if (have_appmenu()) {
+
+		Glib::RefPtr<Gio::SimpleAction> action;
+
+		add_action("preferences", sigc::mem_fun(*this, &App::menu_preferences));
+		add_action("help",        sigc::mem_fun(*this, &App::menu_help));
+		add_action("about",       sigc::mem_fun(*this, &App::menu_about));
+		add_action("quit",        sigc::mem_fun(*this, &App::menu_quit));
+
 		Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
 
-		menu->append ("_Preferences", "app.show-preferences");
-		menu->append ("_Help",        "app.help-contents");
+		menu->append ("_Preferences", "app.preferences");
+		menu->append ("_Help",        "app.help");
 		menu->append ("_About",       "app.about");
 		menu->append ("_Quit",        "app.quit");
 
 		set_app_menu (menu);
-	}
-
+	//}
 }
 
 /**
@@ -95,7 +102,7 @@ App::have_appmenu (void)
  * menu_preferences
  */
 void
-App::menu_preferences (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+App::menu_preferences (void)
 {
 	printf ("%s\n", __func__);
 }
@@ -104,7 +111,7 @@ App::menu_preferences (GSimpleAction *action, GVariant *parameter, gpointer user
  * menu_help
  */
 void
-App::menu_help (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+App::menu_help (void)
 {
 	printf ("%s\n", __func__);
 }
@@ -113,7 +120,7 @@ App::menu_help (GSimpleAction *action, GVariant *parameter, gpointer user_data)
  * menu_about
  */
 void
-App::menu_about (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+App::menu_about (void)
 {
 	Gtk::AboutDialog about;
 
@@ -138,7 +145,7 @@ App::menu_about (GSimpleAction *action, GVariant *parameter, gpointer user_data)
  * menu_quit
  */
 void
-App::menu_quit (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+App::menu_quit (void)
 {
 	quit();
 }
