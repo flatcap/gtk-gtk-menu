@@ -1,14 +1,14 @@
-CC	= gcc
+CC	= g++
 RM	= rm -fr
 MKDIR	= mkdir -p
 
-SRC	= area.c
-HDR	=
+SRC	= app.cpp area.cpp
+HDR	= app.h area.h
 
 DEPDIR	= .dep
 OBJDIR	= .obj
 
-OBJ	= $(SRC:%.c=$(OBJDIR)/%.o)
+OBJ	= $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 OUT	= area
 
@@ -25,7 +25,7 @@ CFLAGS	+= -fno-optimize-sibling-calls
 
 LDFLAGS	+= 
 
-PACKAGES = gtk+-3.0
+PACKAGES = gtkmm-3.0
 
 CFLAGS	+= $(shell pkg-config --cflags $(PACKAGES))
 LDFLAGS += $(shell pkg-config --libs   $(PACKAGES))
@@ -53,7 +53,7 @@ cmd	= @$(if $($(quiet)cmd_$(1)),\
 # ----------------------------------------------------------------------------
 
 quiet_cmd_TAGS	= CTAGS	$@
-      cmd_TAGS	= ctags $(SRC)
+      cmd_TAGS	= ctags $(SRC) $(HDR)
 
 tags:	$(SRC) $(HDR)
 	$(call cmd,TAGS)
@@ -67,7 +67,7 @@ quiet_cmd_CC	= CC	$<
 		  sed -e 's/.*://' -e 's/\\$$//' < $(DEPDIR)/$*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(DEPDIR)/$*.d;		\
 		  rm -f $(DEPDIR)/$*.d.tmp)
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: %.cpp
 	$(call cmd,CC)
 
 # ----------------------------------------------------------------------------
@@ -102,5 +102,5 @@ distclean: clean
 
 force:
 
--include $(SRC:%.c=$(DEPDIR)/%.d)
+-include $(SRC:%.cpp=$(DEPDIR)/%.d)
 
