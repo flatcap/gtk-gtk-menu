@@ -17,6 +17,7 @@
 
 
 #include <gtkmm/builder.h>
+#include <giomm/menu.h>
 
 #include "area.h"
 
@@ -97,4 +98,13 @@ Area::on_my_configure_event (GdkEventConfigure *event)
 	return true;
 }
 
+
+/**
+ * menu_dummy
+ */
+void
+Area::menu_dummy (void)
+{
+	printf ("%s\n", __func__);
+}
 

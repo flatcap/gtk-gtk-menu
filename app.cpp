@@ -24,6 +24,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/builder.h>
 #include <giomm/menu.h>
+#include <giomm/menuitem.h>
 #include <glibmm.h>
 
 #include "app.h"
@@ -65,11 +66,13 @@ App::on_startup (void)
 {
 	Gtk::Application::on_startup();
 
+	Area *area = new Area();
+
+	add_window(*area);
+
 	Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
 
 	theme->append_search_path ("/home/flatcap/work/gtk-app/icons");
-
-	Glib::RefPtr<Gio::SimpleAction> action;
 
 	add_action("preferences", sigc::mem_fun(*this, &App::menu_preferences));
 	add_action("help",        sigc::mem_fun(*this, &App::menu_help));
@@ -84,6 +87,35 @@ App::on_startup (void)
 	menu->append ("_Quit",        "app.quit");
 
 	set_app_menu (menu);
+
+	Glib::RefPtr<Gio::SimpleAction> action;
+
+	action = add_action("apple",      sigc::mem_fun(*this, &App::menu_preferences));
+	action = add_action("banana",     sigc::mem_fun(*this, &App::menu_preferences));
+	action = add_action("cherry",     sigc::mem_fun(*this, &App::menu_preferences));
+	action = add_action("damson",     sigc::mem_fun(*this, &App::menu_preferences));
+	action = add_action("elderberry", sigc::mem_fun(*this, &App::menu_preferences));
+
+	menu = Gio::Menu::create();
+	Glib::RefPtr<Gio::Menu> sub  = Gio::Menu::create();
+
+	sub->append ("_Apple",      "app.apple");
+	sub->append ("_Banana",     "app.banana");
+	sub->append ("_Cherry",     "app.cherry");
+	sub->append ("_Damson",     "app.damson");
+	sub->append ("_Elderberry", "app.elderberry");
+	menu->append_submenu ("_Fruit", sub);
+
+	set_menubar (menu);
+
+	Gio::ActionMap                  *m = dynamic_cast<Gio::ActionMap*>(this);
+	Glib::RefPtr<Gio::Action>        a = m->lookup_action("banana");
+	Glib::RefPtr<Gio::SimpleAction>  s = Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(a);
+	s->set_enabled(false);
+	//bool b = s->get_enabled();
+	//printf ("action banana enabled = %d\n", b);
+
+	area->show();
 }
 
 /**
@@ -92,20 +124,7 @@ App::on_startup (void)
 void
 App::on_activate()
 {
-	//std::cout << "debug1: " << G_STRFUNC << std::endl;
-	// The application has been started, so let's show a window.
-	// A real application might want to reuse this "empty" window in on_open(),
-	// when asked to open a file, if no changes have been made yet.
-
-	Area *area = new Area();
-
-	add_window(*area);
-
-	//Delete the window when it is hidden.
-	//That's enough for this simple example.
-	//window->signal_hide().connect(sigc::bind<Gtk::Window*>(sigc::mem_fun(*this, &App::on_window_hide), window));
-
-	area->show();
+	Gtk::Application::on_activate();
 }
 
 
@@ -133,9 +152,9 @@ App::menu_help (void)
 void
 App::menu_about (void)
 {
-	const std::vector<Glib::ustring> authors     = {"Jim","Bob","Dave","Mike","Phil"};
-	const std::vector<Glib::ustring> documenters = {"Mary","Jane","Gladys"};
-	const std::vector<Glib::ustring> artists     = {"Van Gogh","Monet","Turner"};
+	const std::vector<Glib::ustring> authors     = {"Jim", "Bob", "Dave", "Mike", "Phil"};
+	const std::vector<Glib::ustring> documenters = {"Mary", "Jane", "Gladys"};
+	const std::vector<Glib::ustring> artists     = {"Van Gogh", "Monet", "Turner"};
 
 	Gtk::AboutDialog about;
 

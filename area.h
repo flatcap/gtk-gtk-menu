@@ -29,6 +29,8 @@ public:
 	Area();
 	virtual ~Area();
 
+	void menu_dummy (void);
+
 protected:
 	Gtk::ScrolledWindow	m_scroll;
 	Gtk::DrawingArea	m_draw;
