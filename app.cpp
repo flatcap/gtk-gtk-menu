@@ -64,11 +64,8 @@ App::create (void)
 void
 App::on_startup (void)
 {
+	printf ("Entered: %s\n", __func__);
 	Gtk::Application::on_startup();
-
-	Area *area = new Area();
-
-	add_window(*area);
 
 	Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
 
@@ -112,10 +109,6 @@ App::on_startup (void)
 	Glib::RefPtr<Gio::Action>        a = m->lookup_action("banana");
 	Glib::RefPtr<Gio::SimpleAction>  s = Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(a);
 	s->set_enabled(false);
-	//bool b = s->get_enabled();
-	//printf ("action banana enabled = %d\n", b);
-
-	area->show();
 }
 
 /**
@@ -124,7 +117,58 @@ App::on_startup (void)
 void
 App::on_activate()
 {
+	printf ("Entered: %s\n", __func__);
 	Gtk::Application::on_activate();
+
+	for (auto win : Gtk::Application::get_windows()) {
+		win->present();
+	}
+
+	Area *area = new Area();
+	add_window(*area);
+	area->show();
+}
+
+
+/**
+ * on_window_added
+ */
+void
+App::on_window_added  (Gtk::Window *window)
+{
+	printf ("Entered: %s\n", __func__);
+	Gtk::Application::on_window_added (window);
+}
+
+/**
+ * on_window_removed
+ */
+void
+App::on_window_removed(Gtk::Window *window)
+{
+	printf ("Entered: %s\n", __func__);
+	Gtk::Application::on_window_removed (window);
+}
+
+
+/**
+ * on_open
+ */
+void
+App::on_open (const type_vec_files& files, const Glib::ustring& hint)
+{
+	printf ("Entered: %s\n", __func__);
+	Gtk::Application::on_open (files, hint);
+}
+
+/**
+ * on_command_line
+ */
+int
+App::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line)
+{
+	printf ("Entered: %s\n", __func__);
+	return Gtk::Application::on_command_line (command_line);
 }
 
 

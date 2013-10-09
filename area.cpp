@@ -30,7 +30,7 @@ Area::Area() :
 {
 	set_title("area test");
 
-	set_default_size (1024, 640);
+	set_default_size (200, 100);
 
 	this   ->add (m_scroll);
 	m_scroll.add (m_draw);
@@ -105,6 +105,67 @@ Area::on_my_configure_event (GdkEventConfigure *event)
 void
 Area::menu_dummy (void)
 {
-	printf ("%s\n", __func__);
+	printf ("Entering: %s\n", __func__);
+}
+
+
+/**
+ * on_hide
+ */
+void
+Area::on_hide()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_hide();
+}
+
+/**
+ * on_map
+ */
+void
+Area::on_map()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_map();
+}
+
+/**
+ * on_realize
+ */
+void
+Area::on_realize()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_realize();
+}
+
+/**
+ * on_show
+ */
+void
+Area::on_show()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_show();
+}
+
+/**
+ * on_unmap
+ */
+void
+Area::on_unmap()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_unmap();
+}
+
+/**
+ * on_unrealize
+ */
+void
+Area::on_unrealize()
+{
+	printf ("Entering: %s\n", __func__);
+	Gtk::ApplicationWindow::on_unrealize();
 }
 

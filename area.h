@@ -37,6 +37,13 @@ protected:
 
 	bool on_my_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 	bool on_my_configure_event (GdkEventConfigure *event);
+
+	virtual void on_hide (void);
+	virtual void on_map (void);
+	virtual void on_realize (void);
+	virtual void on_show (void);
+	virtual void on_unmap (void);
+	virtual void on_unrealize (void);
 };
 
 #endif // _AREA_H_
