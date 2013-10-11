@@ -24,12 +24,10 @@
 class App : public Gtk::Application
 {
 public:
-	static Glib::RefPtr<App> create (void);
-
-protected:
 	App();
 	virtual ~App();
 
+protected:
 	virtual void on_activate (void);
 	virtual void on_startup  (void);
 

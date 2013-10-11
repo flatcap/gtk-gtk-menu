@@ -25,6 +25,7 @@
 #include <gtkmm/builder.h>
 #include <giomm/menu.h>
 #include <giomm/menuitem.h>
+#include <giomm/application.h>
 #include <glibmm.h>
 
 #include "app.h"
@@ -48,14 +49,6 @@ App::~App()
 	//printf ("App::~App\n");
 }
 
-/**
- * create
- */
-Glib::RefPtr<App>
-App::create (void)
-{
-	return Glib::RefPtr<App> (new App());
-}
 
 
 /**
@@ -239,9 +232,9 @@ App::menu_quit (void)
 int
 main (int argc, char *argv[])
 {
-	Glib::RefPtr<App> app = App::create();
+	App app;
 
-	return app->run(argc, argv);
+	return app.run(argc, argv);
 }
 
 
